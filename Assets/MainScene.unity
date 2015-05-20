@@ -140,6 +140,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a73f038083354224e80e77f3593a2ad3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ColourGradient:
+    key0:
+      serializedVersion: 2
+      rgba: 4278190080
+    key1:
+      serializedVersion: 2
+      rgba: 4294926592
+    key2:
+      serializedVersion: 2
+      rgba: 16275730
+    key3:
+      serializedVersion: 2
+      rgba: 10748159
+    key4:
+      serializedVersion: 2
+      rgba: 16711794
+    key5:
+      serializedVersion: 2
+      rgba: 0
+    key6:
+      serializedVersion: 2
+      rgba: 0
+    key7:
+      serializedVersion: 2
+      rgba: 0
+    ctime0: 5204
+    ctime1: 31997
+    ctime2: 32382
+    ctime3: 59945
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_NumColorKeys: 5
+    m_NumAlphaKeys: 2
 --- !u!33 &204316690
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -236,7 +279,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!199 &1409502542
 ParticleSystemRenderer:
   m_ObjectHideFlags: 0
@@ -1404,6 +1447,7 @@ GameObject:
   - 92: {fileID: 1715651241}
   - 124: {fileID: 1715651240}
   - 81: {fileID: 1715651239}
+  - 114: {fileID: 1715651244}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1476,3 +1520,14 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &1715651244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1715651238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5e716096b452ce4bab4674fabcaba6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
