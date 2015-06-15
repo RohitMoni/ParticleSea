@@ -19,8 +19,6 @@ namespace Assets
         private const float NoiseScale = 0.05f;
         private const float HeightScale = 3f;
 
-        private float _perlinNoiseTime = 0.01f;
-
         void Awake()
         {
             _particlesArray = new Vector3[SeaResolution * SeaResolution];
@@ -35,11 +33,6 @@ namespace Assets
             SetUpShaderProperties();
         }
 	
-        // Update is called once per frame
-        void Update () {
-            UpdateShaderProperties();
-        }
-
         void CreateParticleSeaMesh()
         {
             var particleSeaMesh = new Mesh();
@@ -81,13 +74,6 @@ namespace Assets
             _material.SetFloat("_Spacing", Spacing);
             _material.SetFloat("_NoiseScale", NoiseScale);
             _material.SetFloat("_HeightScale", HeightScale);
-        }
-
-        void UpdateShaderProperties()
-        {
-            _perlinNoiseTime += 0.01f;
-
-            _material.SetFloat("_PerlinNoiseTime", _perlinNoiseTime);
         }
 
         Texture2D CreateGradientTexture()

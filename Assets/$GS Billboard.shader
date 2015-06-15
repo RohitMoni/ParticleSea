@@ -9,7 +9,6 @@ Shader "Custom/GS Billboard"
 		_HeightScale ("Height Scale", Float) = 3
 		_GradientUV ("Gradient UV", Range(0, 1)) = 0
 		[HideInInspector] _Gradient ("Gradient", 2D) = "white" {}
-		[HideInInspector] _PerlinNoiseTime ("PerlinNoiseTime", Float) = 0.0
 		[HideInInspector] _SeaResolution ("SeaResolution", Int) = 100
 	}
 
@@ -64,7 +63,6 @@ Shader "Custom/GS Billboard"
 				float _GradientUV;
 				
 				// Positioning and Perlin Noise Vars
-				float _PerlinNoiseTime;
 				int _SeaResolution;
 				float _Spacing;
 				float _NoiseScale;
@@ -130,7 +128,7 @@ Shader "Custom/GS Billboard"
 					int i = v.vertex[0] / _Spacing + _SeaResolution / 2;
 					int j = v.vertex[2] / _Spacing + _SeaResolution / 2;
 
-					float yPos = perlin_noise(float2(i * _NoiseScale, j * _NoiseScale), _PerlinNoiseTime) * _HeightScale;
+					float yPos = perlin_noise(float2(i * _NoiseScale, j * _NoiseScale), _Time.y) * _HeightScale;
 
 					v.vertex[1] = yPos;
 
