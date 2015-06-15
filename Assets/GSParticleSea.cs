@@ -49,7 +49,7 @@ namespace Assets
             // The last triangle (assuming there are extra indices needed) will use the same vertice multiple times. This is smallest inefficiency I could think of to make this work.
 
             const int extra = (3 - (SeaResolution*SeaResolution%3));
-            var triangles = new int[SeaResolution*SeaResolution + extra];
+            var triangles = new int[SeaResolution * SeaResolution + extra];
 
             for (var i = 0; i < SeaResolution; i++)
             {

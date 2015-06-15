@@ -7,6 +7,7 @@ Shader "Custom/GS Billboard"
 		_Spacing ("Spacing", Float) = 0.3
 		_NoiseScale ("Noise Scale", Float) = 0.05
 		_HeightScale ("Height Scale", Float) = 3
+		_GradientUV ("Gradient UV", Range(0, 1)) = 0
 		[HideInInspector] _Gradient ("Gradient", 2D) = "white" {}
 		[HideInInspector] _PerlinNoiseTime ("PerlinNoiseTime", Float) = 0.0
 		[HideInInspector] _SeaResolution ("SeaResolution", Int) = 100
@@ -35,12 +36,14 @@ Shader "Custom/GS Billboard"
 					float4	pos		: POSITION;
 					float3	normal	: NORMAL;
 					float2  tex0	: TEXCOORD0;
+					float4	color	: COLOR;
 				};
 
 				struct FS_INPUT
 				{
 					float4	pos		: POSITION;
 					float2  tex0	: TEXCOORD0;
+					float4	gradc	: COLOR;
 				};
 
 
@@ -58,6 +61,7 @@ Shader "Custom/GS Billboard"
 				// Gradient Vars
 				Texture2D _Gradient;
 				SamplerState sampler_Gradient;
+				float _GradientUV;
 				
 				// Positioning and Perlin Noise Vars
 				float _PerlinNoiseTime;
@@ -85,7 +89,7 @@ Shader "Custom/GS Billboard"
 					float3 f = x - floor(x);
 					
 					f       = f*f*(3.0-2.0*f);
-					float n = p.x + p.y*57.0 + 113.0*p.z;
+					float n = p.x + p.y*57.0 + p.z*113.0;
 					
 					return lerp(lerp(lerp( hash(n+0.0), hash(n+1.0),f.x),
 								   lerp( hash(n+57.0), hash(n+58.0),f.x),f.y),
@@ -101,15 +105,17 @@ Shader "Custom/GS Billboard"
 				//and we're good to go!
 				float perlin_noise(float2 uv, float t)
 				{
-					float res = noise(uv     +t*float2(.5,  .5))*64.0 
-						      + noise(uv*2.0 +t*float2(-.7, .2))*32.0
-							  + noise(uv*4.0 +t*float2( 0,   1))*16.0
-						  	  + noise(uv*8.0 +t*float2(1,    0))*8.0
-							  + noise(uv*16.0+t*float2(-.5,-.5))*4.0
-						   	  + noise(uv*32.0+t*float2(.1,  .1))*2.0
-							  + noise(uv*64.0+t*float2(.9,  .9))*1.0;
+					float res = noise(uv     +t*float2(.5,  .5))*64.0
+						      + noise(uv*2.0 +t*float2(.2, .2))*32.0;
+
+							  // Extra octaves (makes it super turbulent)
+							  //+ noise(uv*4.0 +t*float2( 0,   1))*16.0
+						  	  //+ noise(uv*8.0 +t*float2(1,    0))*8.0
+							  //+ noise(uv*16.0+t*float2(-.5,-.5))*4.0
+						   	  //+ noise(uv*32.0+t*float2(.1,  .1))*2.0
+							  //+ noise(uv*64.0+t*float2(.9,  .9))*1.0;
 					
-					return res / (1.0+2.0+4.0+8.0+16.0+32.0+64.0);
+					return res / (1.0+2.0+4.0+8.0+16.0+32.0+64.0) *1.5;
 				}
 
 				// **************************************************************
@@ -131,6 +137,8 @@ Shader "Custom/GS Billboard"
 					output.pos =  mul(_Object2World, v.vertex);
 					output.normal = v.normal;
 					output.tex0 = float2(0, 0);
+					output.color = float4(1.0, 1.0, 0.0, 1.0);
+					output.color = float4(yPos, 0, 0, 0);
 
 					return output;
 				}
@@ -159,18 +167,22 @@ Shader "Custom/GS Billboard"
 						FS_INPUT pIn;
 						pIn.pos = mul(vp, v[0]);
 						pIn.tex0 = float2(1.0f, 0.0f);
+						pIn.gradc = p[i].color;
 						triStream.Append(pIn);
 
 						pIn.pos =  mul(vp, v[1]);
 						pIn.tex0 = float2(1.0f, 1.0f);
+						pIn.gradc = p[i].color;
 						triStream.Append(pIn);
 
 						pIn.pos =  mul(vp, v[2]);
 						pIn.tex0 = float2(0.0f, 0.0f);
+						pIn.gradc = p[i].color;
 						triStream.Append(pIn);
 
 						pIn.pos =  mul(vp, v[3]);
 						pIn.tex0 = float2(0.0f, 1.0f);
+						pIn.gradc = p[i].color;
 						triStream.Append(pIn);
 
 						triStream.RestartStrip();
@@ -184,7 +196,7 @@ Shader "Custom/GS Billboard"
 				{
 					fixed4 color = _SpriteTex.Sample(sampler_SpriteTex, input.tex0);
 
-					color = color * _Gradient.Sample(sampler_Gradient, 0);
+					color = color * _Gradient.Sample(sampler_Gradient, input.gradc / _HeightScale);
 					
 					return color;
 				}
