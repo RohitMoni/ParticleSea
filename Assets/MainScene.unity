@@ -167,8 +167,8 @@ MonoBehaviour:
       rgba: 0
     ctime0: 5204
     ctime1: 31997
-    ctime2: 32382
-    ctime3: 59945
+    ctime2: 39128
+    ctime3: 65535
     ctime4: 65535
     ctime5: 0
     ctime6: 0
@@ -181,7 +181,7 @@ MonoBehaviour:
     atime5: 0
     atime6: 0
     atime7: 0
-    m_NumColorKeys: 5
+    m_NumColorKeys: 4
     m_NumAlphaKeys: 2
 --- !u!33 &204316690
 MeshFilter:
